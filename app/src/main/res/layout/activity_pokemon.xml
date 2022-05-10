@@ -4,15 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
     tools:context=".PokemonActivity">
 
     <TextView
         android:id="@+id/tvPokemonNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Nombre pokemon"
+        android:layout_marginTop="10dp"/>
+
+
+    <ImageView
+        android:id="@+id/fotoPokemon"
+        android:layout_marginTop="10dp"
+        android:layout_width = "70dp"
+        android:layout_height= "70dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPokemonNombre"
+        android:contentDescription="@string/todo">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ivPokemonTipo1"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fotoPokemon"
+        app:layout_constraintTop_toBottomOf="@+id/tvPokemonNombre"
+        tools:text="TIPO" />
+
+    <ImageView
+        android:id="@+id/ivPokemonTipo2"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivPokemonTipo1"
+        app:layout_constraintTop_toBottomOf="@+id/tvPokemonNombre"
+        tools:text="TIPO" />
+
+    <TextView
+        android:id="@+id/tvPokemonPeso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fotoPokemon"
+        app:layout_constraintTop_toBottomOf="@+id/tvPokemonAlt"
+        tools:text="PESO" />
+
+    <TextView
+        android:id="@+id/tvPokemonAlt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fotoPokemon"
+        app:layout_constraintTop_toBottomOf="@+id/ivPokemonTipo1"
+        tools:text="ALTURA" />
+
+    <ImageView
+        android:id="@+id/fotoDetrasPokemon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fotoPokemon"
+        />
+
+    <Button
+        android:id="@+id/boton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VOLVER"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPokemonNombre" />
+
+    <TextView
+        android:id="@+id/tvPokemonTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPokemonTipo1"
+        app:layout_constraintEnd_toStartOf="@+id/ivPokemonTipo1"
+        app:layout_constraintStart_toEndOf="@+id/fotoPokemon"
+        app:layout_constraintTop_toTopOf="@+id/ivPokemonTipo1"
+        tools:text="TIPO" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

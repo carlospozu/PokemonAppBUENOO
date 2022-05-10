@@ -3,4 +3,5 @@
     <string name="descargar_pokemons">Download Pokemons!</string>
     <string name="recargar_pokemons">Reload Pokemons!</string>
     <string name="pokemon_picture">Pokemon\'s Picture</string>
+    <string name="todo">TODO</string>
 </resources>

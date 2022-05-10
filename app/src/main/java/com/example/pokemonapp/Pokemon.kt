@@ -43,10 +43,7 @@ data class Pokemon (
 ) {
     fun nameCapitalized() = "${name[0].uppercase()}${name.drop(1)}"
 
-    /* Es lo mismo que arriba
-    fun nameCapitalized() : String {
-        return "${name[0].uppercase()}${name.drop(1)}"
-    }*/
+
 
     companion object {
         fun fromJson(json: String): Pokemon {

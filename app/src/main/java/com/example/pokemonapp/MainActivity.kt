@@ -1,6 +1,7 @@
 package com.example.pokemonapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
+
+
 
     private lateinit var binding: ActivitySeleccionBinding
     private lateinit var listaPokemon: ListaPokemon
