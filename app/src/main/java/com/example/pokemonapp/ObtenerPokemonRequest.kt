@@ -24,6 +24,8 @@ class ObtenerPokemonRequest {
                 if (response.isSuccessful) {
                     response.body?.string().let { responseBody ->
                         val pokemon = gson.fromJson(responseBody, Pokemon::class.java)
+                        pokemon.iniciarVida()
+
                         listaPokemon.agregar(pokemon)
                     }
 

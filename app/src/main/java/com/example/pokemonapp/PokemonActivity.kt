@@ -43,8 +43,12 @@ class PokemonActivity : AppCompatActivity() {
             Picasso.get().load(pokemon.sprites.backDefault).into(binding.fotoDetrasPokemon)
             val altura =  pokemon.height.toString()
             val peso = pokemon.weight.toString()
-            val hpmax = pokemon.obtenerVidaMax()
-            val hp = pokemon.obtenerVidaRes(hpmax)
+
+            val hpmax = pokemon.hpMax
+
+
+            val hp= pokemon.hpRest
+
             binding.tvPokemonAlt.text = "ALTURA : " + altura + " Centimetros"
             binding.tvPokemonPeso.text = "PESO : " + peso + " Gramos"
             binding.tvPokemonTipo.text = "TIPO :"
@@ -53,10 +57,7 @@ class PokemonActivity : AppCompatActivity() {
             binding.progressVida.max = hpmax
             binding.progressVida.progress = hp
 
-            when(binding.progressVida.progress < hpmax*0.5){
-               
 
-            }
 
 
             val image1 = pokemon.obtenerImagenTipo1()

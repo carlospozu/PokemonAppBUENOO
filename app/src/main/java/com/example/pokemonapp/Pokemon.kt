@@ -5,12 +5,11 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 
 @Serializable
 data class Pokemon (
-    var hpMax: Int,
-    val hpRest: Int,
     val abilities: List<Ability>,
 
     @SerializedName("base_experience")
@@ -47,7 +46,8 @@ data class Pokemon (
 ) {
     fun nameCapitalized() = "${name[0].uppercase()}${name.drop(1)}"
 
-
+    var hpMax = 0
+    var hpRest =0
 
     companion object {
         fun fromJson(json: String): Pokemon {
@@ -71,18 +71,11 @@ data class Pokemon (
         return result
     }
 
-    fun obtenerVidaMax() : Int{
-        val hpmaximo: Int
-        val random = Random()
-        hpmaximo = random.nextInt(150..251)
-        return hpmaximo
+    fun iniciarVida() {
+        hpMax = Random().nextInt(150..251)
+        hpRest = Random().nextInt(1..hpMax)
     }
-    fun obtenerVidaRes(hp: Int) : Int{
-        val hpRestante: Int
-        val random = Random()
-        hpRestante = random.nextInt(0..hp +1)
-        return hpRestante
-    }
+
 
 
 
