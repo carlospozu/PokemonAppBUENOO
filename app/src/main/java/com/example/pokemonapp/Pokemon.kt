@@ -1,12 +1,16 @@
 package com.example.pokemonapp
 
+import com.example.pokemonapp.ObtenerPokemonRequest.Companion.nextInt
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
+import java.util.*
 
 
 @Serializable
 data class Pokemon (
+    var hpMax: Int,
+    val hpRest: Int,
     val abilities: List<Ability>,
 
     @SerializedName("base_experience")
@@ -66,6 +70,21 @@ data class Pokemon (
         result+="\n"
         return result
     }
+
+    fun obtenerVidaMax() : Int{
+        val hpmaximo: Int
+        val random = Random()
+        hpmaximo = random.nextInt(150..251)
+        return hpmaximo
+    }
+    fun obtenerVidaRes(hp: Int) : Int{
+        val hpRestante: Int
+        val random = Random()
+        hpRestante = random.nextInt(0..hp +1)
+        return hpRestante
+    }
+
+
 
     fun obtenerImagenTipo1(): Int? {
         if (types.isEmpty()) return null

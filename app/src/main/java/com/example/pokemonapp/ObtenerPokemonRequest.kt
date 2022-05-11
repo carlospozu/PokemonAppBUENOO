@@ -3,6 +3,7 @@ package com.example.pokemonapp
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.*
 
 class ObtenerPokemonRequest {
 
@@ -17,6 +18,7 @@ class ObtenerPokemonRequest {
                 val request = Request.Builder()
                     .url("https://pokeapi.co/api/v2/pokemon/${i}")
                     .build()
+
                 val response = client.newCall(request).execute()
 
                 if (response.isSuccessful) {
@@ -30,6 +32,11 @@ class ObtenerPokemonRequest {
             }
             return listaPokemon
         }
+
+        fun Random.nextInt(range: IntRange): Int {
+            return range.first + nextInt(range.last - range.first)
+        }
     }
+
 
 }
