@@ -46,8 +46,8 @@ data class Pokemon (
 ) {
     fun nameCapitalized() = "${name[0].uppercase()}${name.drop(1)}"
 
-    var hpMax = 0
-    var hpRest =0
+    var hpMax = Random().nextInt(150..251)
+    var hpRest = Random().nextInt(1..hpMax)
 
     companion object {
         fun fromJson(json: String): Pokemon {

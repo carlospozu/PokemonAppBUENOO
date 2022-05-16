@@ -24,6 +24,8 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val pokemon = pokemons.listaPokemon[position]
+        holder.pokemonBinding.progressVida1.max = pokemon.hpMax
+        holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
         holder.pokemonBinding.tvPokemon.text = pokemon.nameCapitalized()
         Picasso.get().load(pokemon.sprites.frontDefault).into(holder.pokemonBinding.ivPokemon)
         val image1 = pokemon.obtenerImagenTipo1()
