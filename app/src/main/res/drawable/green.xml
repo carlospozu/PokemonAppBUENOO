@@ -2,7 +2,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="8dp"/>
-            <solid android:color="@color/purple_200"/>
+            <solid android:color="@color/white"/>
         </shape>
     </item>
 
@@ -15,7 +15,7 @@
         <scale android:scaleWidth="100%">
             <shape>
                 <corners android:radius="8dp"/>
-                <solid android:color="@color/purple_500"/>
+                <solid android:color="@color/green"/>
             </shape>
         </scale>
     </item>

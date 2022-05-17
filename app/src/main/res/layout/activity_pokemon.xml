@@ -140,7 +140,7 @@
         android:id="@+id/progressVida"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="200dp"
-        android:progressDrawable="@drawable/custum_button"
+        android:progressDrawable="@drawable/progressbar"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/boton"
         app:layout_constraintEnd_toEndOf="parent"

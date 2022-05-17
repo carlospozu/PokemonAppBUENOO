@@ -39,6 +39,7 @@ class PokemonActivity : AppCompatActivity() {
         if (pokemonJson != null) {
             val pokemon = Pokemon.fromJson(pokemonJson)
             binding.tvPokemonNombre.text = pokemon.nameCapitalized()
+
             Picasso.get().load(pokemon.sprites.frontDefault).into(binding.fotoPokemon)
             Picasso.get().load(pokemon.sprites.backDefault).into(binding.fotoDetrasPokemon)
             val altura =  pokemon.height.toString()
@@ -56,6 +57,8 @@ class PokemonActivity : AppCompatActivity() {
             binding.tvHp.text = "HP restante :" + hp
             binding.progressVida.max = hpmax
             binding.progressVida.progress = hp
+
+
 
 
 

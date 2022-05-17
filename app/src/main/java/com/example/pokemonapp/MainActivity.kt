@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvPokemon.adapter = AdapterPokemon()
 
 
+
         readFromPreferences()
 
         actualizarAdapter(listaPokemon)

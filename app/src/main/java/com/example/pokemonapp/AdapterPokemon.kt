@@ -26,7 +26,26 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         val pokemon = pokemons.listaPokemon[position]
         holder.pokemonBinding.progressVida1.max = pokemon.hpMax
         holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
+        holder.pokemonBinding.progressVida2.max = pokemon.hpMax
+        holder.pokemonBinding.progressVida2.progress = pokemon.hpRest
+        holder.pokemonBinding.progressVida3.max = pokemon.hpMax
+        holder.pokemonBinding.progressVida3.progress = pokemon.hpRest
         holder.pokemonBinding.tvPokemon.text = pokemon.nameCapitalized()
+
+        if (holder.pokemonBinding.progressVida1.progress >= holder.pokemonBinding.progressVida1.max*0.7 ){
+            verde(false, holder)
+        }else{
+            if (holder.pokemonBinding.progressVida1.progress > holder.pokemonBinding.progressVida1.max*0.4){
+                amarillo(false, holder)
+            }else{
+                if (holder.pokemonBinding.progressVida1.progress < holder.pokemonBinding.progressVida1.max*0.4){
+                rojo(false, holder)
+            }
+            }
+        }
+
+
+
         Picasso.get().load(pokemon.sprites.frontDefault).into(holder.pokemonBinding.ivPokemon)
         val image1 = pokemon.obtenerImagenTipo1()
         if (image1 != null)
@@ -52,6 +71,14 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         pokemons = listaPokemon
         notifyDataSetChanged()
     }
-
+    private fun verde(visible : Boolean, holder: PokemonViewHolder) {
+        holder.pokemonBinding.progressVida1.visibility = if (visible) View.GONE else View.VISIBLE
+    }
+    private fun amarillo(visible : Boolean, holder: PokemonViewHolder) {
+        holder.pokemonBinding.progressVida2.visibility = if (visible) View.GONE else View.VISIBLE
+    }
+    private fun rojo(visible : Boolean, holder: PokemonViewHolder) {
+        holder.pokemonBinding.progressVida3.visibility = if (visible) View.GONE else View.VISIBLE
+    }
 
 }
