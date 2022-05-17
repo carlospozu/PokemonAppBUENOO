@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 
 @Serializable
@@ -42,12 +41,13 @@ data class Pokemon (
     val sprites: Sprites,
     val stats: List<Stat>,
     val types: List<Type>,
-    val weight: Long
+    val weight: Long,
+
+
 ) {
     fun nameCapitalized() = "${name[0].uppercase()}${name.drop(1)}"
 
-    var hpMax = Random().nextInt(150..251)
-    var hpRest = Random().nextInt(1..hpMax)
+
 
     companion object {
         fun fromJson(json: String): Pokemon {
@@ -55,6 +55,9 @@ data class Pokemon (
             return gson.fromJson(json, Pokemon::class.java)
         }
     }
+
+    var hpMax: Int = 200
+    var hpRest: Int = 100
 
 
     fun toJson() : String {
@@ -70,6 +73,7 @@ data class Pokemon (
         result+="\n"
         return result
     }
+
 
     fun iniciarVida() {
         hpMax = Random().nextInt(150..251)
@@ -117,6 +121,8 @@ data class Pokemon (
         }
     }
 }
+
+
 
 @Serializable
 data class Ability (

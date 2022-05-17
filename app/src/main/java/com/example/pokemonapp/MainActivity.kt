@@ -30,11 +30,13 @@ class MainActivity : AppCompatActivity() {
         binding.rvPokemon.layoutManager = LinearLayoutManager(this)
         binding.rvPokemon.adapter = AdapterPokemon()
 
+
         readFromPreferences()
 
         actualizarAdapter(listaPokemon)
 
         initBotonDescarga()
+
     }
 
     private fun initBotonDescarga() {
