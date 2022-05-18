@@ -3,6 +3,8 @@ package com.example.pokemonapp
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -55,9 +57,17 @@ class PokemonActivity : AppCompatActivity() {
             binding.tvPokemonTipo.text = "TIPO :"
             binding.tvHpMax.text = "HP :" + hpmax
             binding.tvHp.text = "HP restante :" + hp
-            binding.progressVida.max = hpmax
-            binding.progressVida.progress = hp
-
+            binding.progressVida.apply {
+                max = pokemon.hpMax
+                progress = pokemon.hpRest
+                progressTintList = ColorStateList.valueOf(
+                    when{
+                        pokemon.hpRest < pokemon.hpMax* 0.15 -> Color.RED
+                        pokemon.hpRest < pokemon.hpMax* 0.5 -> Color.YELLOW
+                        else -> Color.GREEN
+                    }
+                )
+            }
 
 
 

@@ -2,10 +2,17 @@ package com.example.pokemonapp
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokemonapp.databinding.ItemPokemonBinding
 import com.google.android.material.snackbar.Snackbar
@@ -22,26 +29,36 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         return PokemonViewHolder(pokemonBinding)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
         val pokemon = pokemons.listaPokemon[position]
         holder.pokemonBinding.progressVida1.max = pokemon.hpMax
         holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
-        holder.pokemonBinding.progressVida2.max = pokemon.hpMax
-        holder.pokemonBinding.progressVida2.progress = pokemon.hpRest
-        holder.pokemonBinding.progressVida3.max = pokemon.hpMax
-        holder.pokemonBinding.progressVida3.progress = pokemon.hpRest
         holder.pokemonBinding.tvPokemon.text = pokemon.nameCapitalized()
-
+        holder.pokemonBinding.progressVida1.progressDrawable.colorFilter
+/*
         if (holder.pokemonBinding.progressVida1.progress >= holder.pokemonBinding.progressVida1.max*0.7 ){
-            verde(false, holder)
+            holder.pokemonBinding.progressVida1.progress.toColor() = Color.GREEN
         }else{
             if (holder.pokemonBinding.progressVida1.progress > holder.pokemonBinding.progressVida1.max*0.4){
-                amarillo(false, holder)
+                holder.pokemonBinding.progressVida1.progressDrawable.colorFilter = BlendModeColorFilter(Color.YELLOW, BlendMode.SRC_IN)
             }else{
                 if (holder.pokemonBinding.progressVida1.progress < holder.pokemonBinding.progressVida1.max*0.4){
-                rojo(false, holder)
+                    holder.pokemonBinding.progressVida1.progressDrawable.colorFilter = BlendModeColorFilter(Color.RED, BlendMode.SRC_IN)
             }
             }
+        }*/
+
+        holder.pokemonBinding.progressVida1.apply {
+            max = pokemon.hpMax
+            progress = pokemon.hpRest
+            progressTintList = ColorStateList.valueOf(
+                when{
+                    pokemon.hpRest < pokemon.hpMax* 0.15 -> Color.RED
+                    pokemon.hpRest < pokemon.hpMax* 0.5 -> Color.YELLOW
+                    else -> Color.GREEN
+                }
+            )
         }
 
 
@@ -74,11 +91,6 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
     private fun verde(visible : Boolean, holder: PokemonViewHolder) {
         holder.pokemonBinding.progressVida1.visibility = if (visible) View.GONE else View.VISIBLE
     }
-    private fun amarillo(visible : Boolean, holder: PokemonViewHolder) {
-        holder.pokemonBinding.progressVida2.visibility = if (visible) View.GONE else View.VISIBLE
-    }
-    private fun rojo(visible : Boolean, holder: PokemonViewHolder) {
-        holder.pokemonBinding.progressVida3.visibility = if (visible) View.GONE else View.VISIBLE
-    }
+
 
 }

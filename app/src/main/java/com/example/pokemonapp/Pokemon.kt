@@ -56,8 +56,8 @@ data class Pokemon (
         }
     }
 
-    var hpMax: Int = 200
-    var hpRest: Int = 100
+    var hpMax: Int = 0
+    var hpRest: Int = 0
 
 
     fun toJson() : String {
