@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         readFromPreferences()
 
         actualizarAdapter(listaPokemon)

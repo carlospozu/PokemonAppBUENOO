@@ -25,6 +25,7 @@ class ObtenerPokemonRequest {
                     response.body?.string().let { responseBody ->
                         val pokemon = gson.fromJson(responseBody, Pokemon::class.java)
                         pokemon.iniciarVida()
+                        pokemon.favorito = false
 
                         listaPokemon.agregar(pokemon)
                     }

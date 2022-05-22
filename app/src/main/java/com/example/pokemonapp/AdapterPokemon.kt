@@ -1,21 +1,15 @@
 package com.example.pokemonapp
 
-import android.content.Context
-import android.content.Intent
+
 import android.content.res.ColorStateList
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
+
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokemonapp.databinding.ItemPokemonBinding
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() {
@@ -23,6 +17,7 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
     private var pokemons = ListaPokemon()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val pokemonBinding = ItemPokemonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -36,18 +31,7 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
         holder.pokemonBinding.tvPokemon.text = pokemon.nameCapitalized()
         holder.pokemonBinding.progressVida1.progressDrawable.colorFilter
-/*
-        if (holder.pokemonBinding.progressVida1.progress >= holder.pokemonBinding.progressVida1.max*0.7 ){
-            holder.pokemonBinding.progressVida1.progress.toColor() = Color.GREEN
-        }else{
-            if (holder.pokemonBinding.progressVida1.progress > holder.pokemonBinding.progressVida1.max*0.4){
-                holder.pokemonBinding.progressVida1.progressDrawable.colorFilter = BlendModeColorFilter(Color.YELLOW, BlendMode.SRC_IN)
-            }else{
-                if (holder.pokemonBinding.progressVida1.progress < holder.pokemonBinding.progressVida1.max*0.4){
-                    holder.pokemonBinding.progressVida1.progressDrawable.colorFilter = BlendModeColorFilter(Color.RED, BlendMode.SRC_IN)
-            }
-            }
-        }*/
+
 
         holder.pokemonBinding.progressVida1.apply {
             max = pokemon.hpMax
@@ -61,6 +45,13 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
             )
         }
 
+        colorFavorito(holder, position)
+
+      holder.pokemonBinding.caja.setOnLongClickListener{
+          selecionarFavorito(holder ,position)
+
+
+      }
 
 
         Picasso.get().load(pokemon.sprites.frontDefault).into(holder.pokemonBinding.ivPokemon)
@@ -78,19 +69,32 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         holder.pokemonBinding.root.setOnClickListener {
             PokemonActivity.start(pokemon, holder.pokemonBinding.root.context)
         }
+
+
     }
+
 
     override fun getItemCount(): Int {
         return pokemons.listaPokemon.size
+    }
+    fun colorFavorito(holder: PokemonViewHolder, position: Int){
+        if ( pokemons.listaPokemon[position].favorito == true)
+            holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
+        if ( pokemons.listaPokemon[position].favorito == false)
+            holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
+    }
+
+    fun selecionarFavorito(holder: PokemonViewHolder ,position: Int ): Boolean {
+        pokemons.listaPokemon[position].favorito = pokemons.listaPokemon[position].favorito != true
+        colorFavorito(holder, position)
+        return true
     }
 
     fun actualizarLista(listaPokemon: ListaPokemon) {
         pokemons = listaPokemon
         notifyDataSetChanged()
     }
-    private fun verde(visible : Boolean, holder: PokemonViewHolder) {
-        holder.pokemonBinding.progressVida1.visibility = if (visible) View.GONE else View.VISIBLE
-    }
+
 
 
 }

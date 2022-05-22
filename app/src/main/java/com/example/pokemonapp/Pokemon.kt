@@ -42,6 +42,7 @@ data class Pokemon (
     val stats: List<Stat>,
     val types: List<Type>,
     val weight: Long,
+    var favorito: Boolean?,
 
 
 ) {
