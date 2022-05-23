@@ -5,18 +5,20 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
-
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokemonapp.databinding.ItemPokemonBinding
+import com.pokemon.server.Usuario
 import com.squareup.picasso.Picasso
+
 
 class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() {
 
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
     private var pokemons = ListaPokemon()
+    private var user = Usuario
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
@@ -77,6 +79,7 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
     override fun getItemCount(): Int {
         return pokemons.listaPokemon.size
     }
+
     fun colorFavorito(holder: PokemonViewHolder, position: Int){
         if ( pokemons.listaPokemon[position].favorito == true)
             holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
@@ -85,10 +88,11 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
     }
 
     fun selecionarFavorito(holder: PokemonViewHolder ,position: Int ): Boolean {
-        pokemons.listaPokemon[position].favorito = pokemons.listaPokemon[position].favorito != true
+
         colorFavorito(holder, position)
         return true
     }
+
 
     fun actualizarLista(listaPokemon: ListaPokemon) {
         pokemons = listaPokemon
