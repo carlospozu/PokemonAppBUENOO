@@ -1,13 +1,11 @@
 package com.example.pokemonapp
 
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokemonapp.ObtenerPokemonRequest.Companion.nextInt
 import com.example.pokemonapp.databinding.ItemPokemonBinding
@@ -21,7 +19,7 @@ import java.io.IOException
 import java.util.*
 
 
-class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() {
+class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() {
 
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
@@ -35,15 +33,13 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         return PokemonViewHolder(pokemonBinding)
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        asignarFav(position, usuarios)
         val pokemon = pokemons.listaPokemon[position]
         holder.pokemonBinding.progressVida1.max = pokemon.hpMax
         holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
         holder.pokemonBinding.tvPokemon.text = pokemon.nameCapitalized()
         holder.pokemonBinding.progressVida1.progressDrawable.colorFilter
-
 
         holder.pokemonBinding.progressVida1.apply {
             max = pokemon.hpMax
@@ -57,12 +53,8 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
             )
         }
 
-        colorFavorito(holder, position)
-
       holder.pokemonBinding.caja.setOnLongClickListener{
-          selecionarFavorito(holder ,position)
-
-
+        selecionarFavorito(holder, position, token)
       }
 
 
@@ -81,7 +73,7 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         holder.pokemonBinding.root.setOnClickListener {
             PokemonActivity.start(pokemon, holder.pokemonBinding.root.context)
         }
-
+        asignarFav(position, usuarios.listaUsuario, holder)
 
     }
 
@@ -90,50 +82,76 @@ class AdapterPokemon : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() 
         return pokemons.listaPokemon.size
     }
 
-    fun asignarFav(position: Int, listaUsuario: ListaUsuario){
-        listaUsuario.listaUsuario.forEach {
+    fun asignarFav(
+        position: Int, listaUsuario: MutableList<Usuario>,
+        holder: PokemonViewHolder,
+    ){
+        listaUsuario.forEach {
             pokemons.listaPokemon[position].favorito = it.pokemonFavoritoId == position
         }
+        colorFavorito(holder, position, pokemons.listaPokemon)
     }
 
-    fun colorFavorito(holder: PokemonViewHolder, position: Int){
+    fun colorFavorito(holder: PokemonViewHolder, position: Int, listaPokemon: MutableList<Pokemon>){
 
-
-        if ( pokemons.listaPokemon[position].favorito == true)
+        listaPokemon.forEach {
+            if ( it.favorito == true)
+                holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
+            if ( it.favorito == false)
+                holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
+        }
+       /* if ( pokemons.listaPokemon[position].favorito == true)
             holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
         if ( pokemons.listaPokemon[position].favorito == false)
             holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
+
+        */
     }
 
-    fun selecionarFavorito(holder: PokemonViewHolder ,position: Int ): ListaUsuario {
-        val listaUser1 = ListaUsuario()
-        val hilo = Thread(
-            Runnable {
-                Thread.sleep(4000)
-                val id = Random().nextInt(1..150)
+    fun selecionarFavorito(holder: PokemonViewHolder, position: Int, token: String): Boolean{
+        val id = llamadaFav(token)
 
-                val client = OkHttpClient()
-                val request = Request.Builder()
-                request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
+        var cont = 0
+        pokemons.listaPokemon.forEach {
+            cont ++
+            if (id == cont)
+                it.favorito = true
+        }
+        colorFavorito(holder, position, pokemons.listaPokemon)
+       /* pokemons.listaPokemon[position].favorito = pokemons.listaPokemon[position].favorito != true
+        colorFavorito(holder, position)
+        return true
 
-                val call = client.newCall(request.build())
-                call.enqueue( object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        println(e.toString())
-                        CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(this@AdapterPokemon, "Algo ha ido mal", Toast.LENGTH_SHORT).show()
-                        }
+        */
+        return true
+    }
+
+
+    private fun llamadaFav(token: String) : Int {
+
+        val id = Random().nextInt(1..20)
+            val client = OkHttpClient()
+            val request = Request.Builder()
+            request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
+
+            val call = client.newCall(request.build())
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    println(e.toString())
+                    CoroutineScope(Dispatchers.Main).launch {
+                        println("error")
                     }
-                    override fun onResponse(call: Call, response: Response) {
-                        println(response.toString())
-                        listaUser1.cambiarFav(id, token, holder)
-                    }} )
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    println(response.toString())
+                }
             })
-        hilo.start()
-        return listaUser1
+
+        return id
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun actualizarLista(listaPokemon: ListaPokemon) {
         pokemons = listaPokemon
         notifyDataSetChanged()

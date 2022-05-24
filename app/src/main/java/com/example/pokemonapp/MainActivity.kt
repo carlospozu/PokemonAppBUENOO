@@ -39,29 +39,30 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.rvPokemon.layoutManager = LinearLayoutManager(this)
-        binding.rvPokemon.adapter = AdapterPokemon()
+        binding.rvPokemon.adapter = AdapterPokemon(token)
 
 
         readFromPreferences()
        listaUsuario = llamada()
 
-       listaUsuario = llamadaFav()
+
+        Thread.sleep(5000)
 
 
-        actualizarAdapter(listaPokemon, listaUsuario)
+        actualizarAdapter(listaPokemon)
 
         initBotonDescarga()
 
     }
 
     private fun initBotonDescarga() {
-        binding.bDescarga.contentDescription = if (listaPokemon.listaPokemon.isNullOrEmpty()) {
+        binding.bDescarga.contentDescription = if (listaPokemon.listaPokemon.isEmpty()) {
             getString(R.string.descargar_pokemons)
         } else {
             getString(R.string.recargar_pokemons)
         }
 
-        if (listaPokemon.listaPokemon.isNullOrEmpty()) {
+        if (listaPokemon.listaPokemon.isEmpty()) {
             binding.bDescarga.setImageResource(R.mipmap.ic_descarga)
         } else {
             binding.bDescarga.setImageResource(R.mipmap.ic_recarga)
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 listaPokemon = ObtenerPokemonRequest.get()
                 withContext(Dispatchers.Main) {
-                    actualizarAdapter(listaPokemon, listaUsuario)
+                    actualizarAdapter(listaPokemon)
                     initBotonDescarga()
                     loadingVisible(false)
                 }
@@ -88,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun actualizarAdapter(listaPokemon : ListaPokemon, listaUsuario: ListaUsuario){
+    private fun actualizarAdapter(listaPokemon : ListaPokemon){
         (binding.rvPokemon.adapter as AdapterPokemon).actualizarLista(listaPokemon)
     }
 
@@ -126,32 +127,33 @@ class MainActivity : AppCompatActivity() {
             .joinToString("")
     }
 
-    private fun llamadaFav(): ListaUsuario {
+    private fun llamadaFav() : Int {
         val listaUser1 = ListaUsuario()
-        val hilo = Thread(
-            Runnable {
-                Thread.sleep(4000)
-        val id = Random().nextInt(1..150)
+        val id = Random().nextInt(1..20)
+        val hilo = Thread {
+            Thread.sleep(4000)
+            val client = OkHttpClient()
+            val request = Request.Builder()
+            request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
 
-        val client = OkHttpClient()
-        val request = Request.Builder()
-        request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
-
-        val call = client.newCall(request.build())
-        call.enqueue( object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                println(e.toString())
-                CoroutineScope(Dispatchers.Main).launch {
-                    Toast.makeText(this@MainActivity, "Algo ha ido mal", Toast.LENGTH_SHORT).show()
+            val call = client.newCall(request.build())
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    println(e.toString())
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(this@MainActivity, "Algo ha ido mal", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-            }
-            override fun onResponse(call: Call, response: Response) {
-                println(response.toString())
-                listaUser1.cambiarFav(id, token, binding.root)
-                }} )
-                })
+                override fun onResponse(call: Call, response: Response) {
+                    println(response.toString())
+                    listaUser1.cambiarFav(id, token, binding.root)
+                }
+            })
+        }
         hilo.start()
-        return listaUser1
+        writeInPreferences()
+        return id
     }
 
 
@@ -179,11 +181,14 @@ class MainActivity : AppCompatActivity() {
                     val body = responseBody.string()
                     println(body)
                     val gson = Gson()
+                     val id = llamadaFav()
 
                     val usuario = gson.fromJson(body, Usuario::class.java)
+                    usuario.pokemonFavoritoId=id
                     listaUser.agregar(usuario)
 
                 }}} )
+        writeInPreferences()
     return listaUser}
 
 
