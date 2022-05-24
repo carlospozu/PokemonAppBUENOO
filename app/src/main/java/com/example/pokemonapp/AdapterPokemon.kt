@@ -94,18 +94,20 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
 
     fun colorFavorito(holder: PokemonViewHolder, position: Int, listaPokemon: MutableList<Pokemon>){
 
-        listaPokemon.forEach {
+        /*listaPokemon.forEach {
             if ( it.favorito == true)
                 holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
             if ( it.favorito == false)
                 holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
         }
-       /* if ( pokemons.listaPokemon[position].favorito == true)
+
+         */
+        if ( pokemons.listaPokemon[position].favorito == true)
             holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
-        if ( pokemons.listaPokemon[position].favorito == false)
+        else
             holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
 
-        */
+
     }
 
     fun selecionarFavorito(holder: PokemonViewHolder, position: Int, token: String): Boolean{
