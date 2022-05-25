@@ -33,15 +33,15 @@ class ListaUsuario(var listaUsuario : MutableList<Usuario> = mutableListOf()) {
                     view,
                     "ERROR DE TOKEN",
                     Snackbar.LENGTH_SHORT
-                ).show()
+                )
+                    .show()
+        }
         }
 
-        }
 
 
 
-
-    fun imprimirPokemons(){
+    fun imprimirUsuarios(){
         if (listaUsuario.isEmpty()) {
             println("No se ha encontrado a ese Pokémon")
         } else {

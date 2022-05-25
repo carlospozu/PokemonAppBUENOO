@@ -3,21 +3,13 @@ package com.example.pokemonapp
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokemonapp.ObtenerPokemonRequest.Companion.nextInt
 import com.example.pokemonapp.databinding.ActivitySeleccionBinding
-import com.google.gson.Gson
-import com.pokemon.server.Usuario
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.*
-import java.io.IOException
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listaUsuario: ListaUsuario
 
     private val tagListaPokemon = "TAG_LISTA_POKEMON"
-    private val tagToken ="TOKEN"
+    private val tagToken = "TOKEN"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +33,10 @@ class MainActivity : AppCompatActivity() {
         binding.rvPokemon.layoutManager = LinearLayoutManager(this)
         binding.rvPokemon.adapter = AdapterPokemon(token)
 
-
         readFromPreferences()
-       listaUsuario = llamada()
-
+        listaUsuario = llamada.get(user, pass, this, binding.root)
 
         Thread.sleep(5000)
-
 
         actualizarAdapter(listaPokemon)
 
@@ -83,55 +72,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadingVisible(visible : Boolean) {
+    private fun loadingVisible(visible: Boolean) {
         binding.pbLoading.visibility = if (visible) View.VISIBLE else View.GONE
         binding.bDescarga.visibility = if (!visible) View.VISIBLE else View.GONE
 
     }
 
-    private fun actualizarAdapter(listaPokemon : ListaPokemon){
+    private fun actualizarAdapter(listaPokemon: ListaPokemon) {
         (binding.rvPokemon.adapter as AdapterPokemon).actualizarLista(listaPokemon)
     }
 
     private fun writeInPreferences() {
-         getPreferences(Context.MODE_PRIVATE).edit().apply {
+        getPreferences(Context.MODE_PRIVATE).edit().apply {
             putString(tagListaPokemon, this@MainActivity.listaPokemon.toJson())
-             putString(tagToken, this@MainActivity.listaUsuario.toJson())
+            putString(tagToken, this@MainActivity.listaUsuario.toJson())
             apply()
         }
     }
 
 
-
-
     private fun readFromPreferences() {
         val pokemonsText = getPreferences(Context.MODE_PRIVATE).getString(tagListaPokemon, "")
-        listaPokemon = if (pokemonsText.isNullOrBlank()){
+        listaPokemon = if (pokemonsText.isNullOrBlank()) {
             ListaPokemon()
         } else {
             ListaPokemon.fromJson(pokemonsText)
         }
 
         val tokenTexto = getPreferences(Context.MODE_PRIVATE).getString(tagToken, "")
-        listaUsuario = if (tokenTexto.isNullOrBlank()){
+        listaUsuario = if (tokenTexto.isNullOrBlank()) {
             ListaUsuario()
         } else {
             ListaUsuario.fromJson(tokenTexto)
         }
     }
 
-    fun getRandomString(length: Int) : String {
+    fun getRandomString(length: Int): String {
         val charset = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz0123456789"
         return (1..length)
             .map { charset.random() }
             .joinToString("")
     }
 
+}
+/*
     private fun llamadaFav() : Int {
         val listaUser1 = ListaUsuario()
         val id = Random().nextInt(1..20)
-        val hilo = Thread {
-            Thread.sleep(4000)
+
+            Thread.sleep(10000)
             val client = OkHttpClient()
             val request = Request.Builder()
             request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
@@ -141,7 +130,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(call: Call, e: IOException) {
                     println(e.toString())
                     CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(this@MainActivity, "Algo ha ido mal", Toast.LENGTH_SHORT)
+                        Snackbar.make(binding.rvPokemon, "ERROR DE TOKEN", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("ARREGLAR", View.OnClickListener {
+                                llamada()
+                            })
                             .show()
                     }
                 }
@@ -150,15 +142,14 @@ class MainActivity : AppCompatActivity() {
                     listaUser1.cambiarFav(id, token, binding.root)
                 }
             })
-        }
-        hilo.start()
-        writeInPreferences()
         return id
     }
 
+ */
 
 
-    private fun llamada(): ListaUsuario {
+
+   /* private fun llamada(): ListaUsuario {
         val listaUser = ListaUsuario()
         val client = OkHttpClient()
 
@@ -188,8 +179,9 @@ class MainActivity : AppCompatActivity() {
                     listaUser.agregar(usuario)
 
                 }}} )
-        writeInPreferences()
+
     return listaUser}
 
+    */
 
-}
+

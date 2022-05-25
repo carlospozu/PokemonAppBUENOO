@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokemonapp.ObtenerPokemonRequest.Companion.nextInt
 import com.example.pokemonapp.databinding.ItemPokemonBinding
+import com.google.android.material.snackbar.Snackbar
 import com.pokemon.server.Usuario
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,6 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
     private var pokemons = ListaPokemon()
-    private var user = Usuario
     private var usuarios = ListaUsuario()
 
 
@@ -111,7 +111,7 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
     }
 
     fun selecionarFavorito(holder: PokemonViewHolder, position: Int, token: String): Boolean{
-        val id = llamadaFav(token)
+        val id = llamadaFav(token, holder)
 
         var cont = 0
         pokemons.listaPokemon.forEach {
@@ -129,7 +129,7 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
     }
 
 
-    private fun llamadaFav(token: String) : Int {
+    private fun llamadaFav(token: String, holder: PokemonViewHolder) : Int {
 
         val id = Random().nextInt(1..20)
             val client = OkHttpClient()
@@ -141,7 +141,14 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
                 override fun onFailure(call: Call, e: IOException) {
                     println(e.toString())
                     CoroutineScope(Dispatchers.Main).launch {
-                        println("error")
+                       Snackbar.make(holder.pokemonBinding.caja, "ERROR DE TOKEN", Snackbar.LENGTH_INDEFINITE)
+                           .setAction(
+                               "ARREGLAR",
+                           ) {
+                               llamada()
+                           }
+                           .show()
+
                     }
                 }
                 override fun onResponse(call: Call, response: Response) {
