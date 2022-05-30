@@ -22,6 +22,7 @@ import java.util.*
 
 class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.PokemonViewHolder>() {
 
+
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
     private var pokemons = ListaPokemon()
@@ -35,6 +36,7 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
 
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
+        colorFavorito(holder, position )
         val pokemon = pokemons.listaPokemon[position]
         holder.pokemonBinding.progressVida1.max = pokemon.hpMax
         holder.pokemonBinding.progressVida1.progress = pokemon.hpRest
@@ -73,15 +75,14 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
         holder.pokemonBinding.root.setOnClickListener {
             PokemonActivity.start(pokemon, holder.pokemonBinding.root.context)
         }
-        asignarFav(position, usuarios.listaUsuario, holder)
-
+        //asignarFav(position, usuarios.listaUsuario, holder)
     }
 
 
     override fun getItemCount(): Int {
         return pokemons.listaPokemon.size
     }
-
+    /*
     fun asignarFav(
         position: Int, listaUsuario: MutableList<Usuario>,
         holder: PokemonViewHolder,
@@ -92,16 +93,11 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
         colorFavorito(holder, position, pokemons.listaPokemon)
     }
 
-    fun colorFavorito(holder: PokemonViewHolder, position: Int, listaPokemon: MutableList<Pokemon>){
+     */
 
-        /*listaPokemon.forEach {
-            if ( it.favorito == true)
-                holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
-            if ( it.favorito == false)
-                holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
-        }
+    fun colorFavorito(holder: PokemonViewHolder, position: Int){
 
-         */
+
         if ( pokemons.listaPokemon[position].favorito == true)
             holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
         else
@@ -119,12 +115,13 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
             if (id == cont)
                 it.favorito = true
         }
-        colorFavorito(holder, position, pokemons.listaPokemon)
+        colorFavorito(holder, position, )
+
        /* pokemons.listaPokemon[position].favorito = pokemons.listaPokemon[position].favorito != true
         colorFavorito(holder, position)
         return true
-
         */
+
         return true
     }
 
@@ -148,7 +145,6 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
                                llamada()
                            }
                            .show()
-
                     }
                 }
                 override fun onResponse(call: Call, response: Response) {

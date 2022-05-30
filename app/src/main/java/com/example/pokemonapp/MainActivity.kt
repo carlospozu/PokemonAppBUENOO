@@ -34,9 +34,8 @@ class MainActivity : AppCompatActivity() {
         binding.rvPokemon.adapter = AdapterPokemon(token)
 
         readFromPreferences()
-        listaUsuario = llamada.get(user, pass, this, binding.root)
+        listaUsuario = llamada.get(user, pass, this, binding.root, listaPokemon)
 
-        Thread.sleep(5000)
 
         actualizarAdapter(listaPokemon)
 

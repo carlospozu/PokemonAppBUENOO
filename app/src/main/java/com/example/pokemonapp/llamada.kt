@@ -17,7 +17,13 @@ class llamada {
     companion object {
 
 
-        fun get(user: String, pass: String, context: Context, view: View): ListaUsuario {
+        fun get(
+            user: String,
+            pass: String,
+            context: Context,
+            view: View,
+            listaPokemon: ListaPokemon
+        ): ListaUsuario {
             val token = user + pass
             val listaUser = ListaUsuario()
             val client = OkHttpClient()
@@ -45,8 +51,12 @@ class llamada {
 
                         val usuario = gson.fromJson(body, Usuario::class.java)
                         usuario.pokemonFavoritoId=id
-                        listaUser.agregar(usuario)
-
+                       var cont = 0
+                        listaPokemon.listaPokemon.forEach {
+                            cont ++
+                            if (id == cont)
+                                it.favorito
+                        }
                     }}} )
 
             return listaUser
