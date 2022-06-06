@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokemonapp.databinding.ActivitySeleccionBinding
+import com.pokemon.server.Usuario
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     val token = user + pass
     private lateinit var binding: ActivitySeleccionBinding
     private lateinit var listaPokemon: ListaPokemon
-    private lateinit var listaUsuario: ListaUsuario
+    private lateinit var listaUsuario: Usuario
 
     private val tagListaPokemon = "TAG_LISTA_POKEMON"
     private val tagToken = "TOKEN"
@@ -100,9 +101,10 @@ class MainActivity : AppCompatActivity() {
 
         val tokenTexto = getPreferences(Context.MODE_PRIVATE).getString(tagToken, "")
         listaUsuario = if (tokenTexto.isNullOrBlank()) {
-            ListaUsuario()
+            Usuario()
         } else {
-            ListaUsuario.fromJson(tokenTexto)
+            Usuario().fromJson(tokenTexto)
+
         }
     }
 

@@ -23,9 +23,9 @@ class llamada {
             context: Context,
             view: View,
             listaPokemon: ListaPokemon
-        ): ListaUsuario {
+        ): Usuario {
             val token = user + pass
-            val listaUser = ListaUsuario()
+            val listaUser = Usuario()
             val client = OkHttpClient()
 
             val request = Request.Builder()

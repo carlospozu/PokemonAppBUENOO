@@ -97,25 +97,25 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
 
     fun colorFavorito(holder: PokemonViewHolder, position: Int){
 
-
-        if ( pokemons.listaPokemon[position].favorito == true)
-            holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
-        else
-            holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
-
-
+        pokemons.listaPokemon.forEach {
+            if (it.favorito == true)
+                holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
+            else
+                holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
+        }
     }
 
     fun selecionarFavorito(holder: PokemonViewHolder, position: Int, token: String): Boolean{
-        val id = llamadaFav(token, holder)
+        val id = llamadaFav(token, holder, position)
 
-        var cont = 0
-        pokemons.listaPokemon.forEach {
-            cont ++
-            if (id == cont)
-                it.favorito = true
-        }
-        colorFavorito(holder, position, )
+        pokemons.listaPokemon[id].favorito = pokemons.listaPokemon[id].favorito == false
+        if (pokemons.listaPokemon[id].favorito == true)
+            holder.pokemonBinding.caja.setBackgroundColor(Color.LTGRAY)
+        else
+            holder.pokemonBinding.caja.setBackgroundColor(Color.BLACK)
+    
+
+     //   colorFavorito(holder, position)
 
        /* pokemons.listaPokemon[position].favorito = pokemons.listaPokemon[position].favorito != true
         colorFavorito(holder, position)
@@ -126,12 +126,10 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
     }
 
 
-    private fun llamadaFav(token: String, holder: PokemonViewHolder) : Int {
-
-        val id = Random().nextInt(1..20)
+    private fun llamadaFav(token: String, holder: PokemonViewHolder, position: Int) : Int {
             val client = OkHttpClient()
             val request = Request.Builder()
-            request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$id")
+            request.url("http://10.0.2.2:8084/pokemonFavorito/$token/$position")
 
             val call = client.newCall(request.build())
             call.enqueue(object : Callback {
@@ -152,7 +150,7 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
                 }
             })
 
-        return id
+        return position
     }
 
 
