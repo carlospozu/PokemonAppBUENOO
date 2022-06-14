@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.IOException
-import java.util.*
 
 class llamada {
 
@@ -47,7 +46,7 @@ class llamada {
                         val body = responseBody.string()
                         println(body)
                         val gson = Gson()
-                        val id = llamadaFav.get(view, token)
+                        val id = llamadaFav.get(view, token, listaUser)
 
                         val usuario = gson.fromJson(body, Usuario::class.java)
                         usuario.pokemonFavoritoId=id

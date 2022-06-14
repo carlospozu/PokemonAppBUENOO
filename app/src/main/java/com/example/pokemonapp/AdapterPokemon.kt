@@ -26,7 +26,7 @@ class AdapterPokemon(val token: String) : RecyclerView.Adapter<AdapterPokemon.Po
     class PokemonViewHolder(val pokemonBinding: ItemPokemonBinding) : RecyclerView.ViewHolder(pokemonBinding.root)
 
     private var pokemons = ListaPokemon()
-    private var usuarios = ListaUsuario()
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {

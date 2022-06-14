@@ -20,8 +20,8 @@ class llamadaFav {
 
         private var gson = Gson()
 
-        fun get(view: View, token: String): Int {
-            val listaUser1 = ListaUsuario()
+        fun get(view: View, token: String, listaUser: Usuario): Int {
+
             val id = Random().nextInt(1..20)
 
             Thread.sleep(10000)
@@ -45,7 +45,8 @@ class llamadaFav {
                 }
                 override fun onResponse(call: Call, response: Response) {
                     println(response.toString())
-                    listaUser1.cambiarFav(id, token, view)
+                   if (listaUser.token == token)
+                       listaUser.pokemonFavoritoId = id
                 }
             })
             return id
